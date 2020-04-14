@@ -4,9 +4,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Run Project
 
-1) git clone
-2) npm i
-3) ng serve
+1. git clone
+2. npm i
+3. ng serve
 
 ## Development server
 
