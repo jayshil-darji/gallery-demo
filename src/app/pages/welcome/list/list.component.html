@@ -1,0 +1,37 @@
+<nz-table #filterTable [nzData]="listOfDisplayData" [nzLoading]="loading">
+	<thead>
+		<tr>
+			<th>Image</th>
+			<th>
+				Name
+			</th>
+			<th>Id</th>
+			<th>
+				Email
+			</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let data of filterTable.data">
+			<td>
+				<nz-avatar *ngIf="data['imgs'].length && data['imgs'][0].hasOwnProperty('url')" nzIcon="user" [nzSrc]="data['imgs'][0].url"></nz-avatar>
+				<nz-avatar *ngIf="data['imgs'].length && data['imgs'][0].hasOwnProperty('thumbUrl')" nzIcon="user" [nzSrc]="data['imgs'][0].thumbUrl"></nz-avatar>
+				<nz-avatar *ngIf="!data['imgs'].length" nzIcon="user"></nz-avatar>
+			</td>
+			<td>{{ data.name }}</td>
+			<td>{{ data.id }}</td>
+			<td>{{ data.email }}</td>
+			<td>
+				<a nzTooltipTitle="View" nzTooltipPlacement="bottom" nz-tooltip [routerLink]="['/welcome/view', data.id]" routerLinkActive="router-link-active">
+					<i nz-icon nzType="eye" nzTheme="outline" style="color: gray;"></i>
+				</a>
+				<nz-divider nzType="vertical"></nz-divider>
+				<a nz-popconfirm nzPopconfirmTitle="Are you sure you want to delete?" nzOkText="ok" nzCancelText="cancel"
+					(nzOnConfirm)="confirm(data.id)">
+					<i nz-icon nzType="delete" nzTheme="outline" style="color: #ff0000c7;"></i>
+				</a>
+			</td>
+		</tr>
+	</tbody>
+</nz-table>
