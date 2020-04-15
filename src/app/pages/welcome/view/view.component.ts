@@ -108,41 +108,46 @@ export class ViewComponent implements OnInit {
 		reader.readAsDataURL(img);
 	}
 
+	private handleDoneAndError(info): void {
+		this.getBase64(info.file!.originFileObj!, (img: string) => {
+			this.loading = false;
+			this.avatarUrl = img;
+			const id = Math.floor((Math.random() * 100) + 1);
+			const image = {
+				uid: id,
+				name: `${id}xxx.png`,
+				status: 'done',
+				url: img
+			};
+			const data = localStorage.getItem('userDetails');
+			if (data) {
+				const users = JSON.parse(data);
+				const activeUser = users.find(user => Number(user['id']) === Number(this.id));
+				const index = users.findIndex(user => Number(user['id']) === Number(this.id));
+				activeUser['imgs'].push(image);
+				users.splice(index, 1);
+				users.push(activeUser);
+				localStorage.removeItem('userDetails');
+				localStorage.setItem('userDetails', JSON.stringify(users));
+				const token = this.cookieService.get('token'); 
+				if (token && Number(token) === Number(this.id)) {
+					this.commonService.setEvent('imgSrc', img);
+				}
+				this.showNotification('success', 'Image uploaded.', 'Image uploaded successfully');
+			}
+		});
+	}
+
 	handleChange(info: { file: UploadFile }): void {
 		switch (info.file.status) {
 			case 'uploading':
 				this.loading = true;
 				break;
 			case 'done':
-				this.getBase64(info.file!.originFileObj!, (img: string) => {
-					this.loading = false;
-					this.avatarUrl = img;
-					const id = Math.floor((Math.random() * 100) + 1);
-					const image = {
-						uid: id,
-						name: `${id}xxx.png`,
-						status: 'done',
-						url: img
-					};
-					const data = localStorage.getItem('userDetails');
-					if (data) {
-						const users = JSON.parse(data);
-						const activeUser = users.find(user => Number(user['id']) === Number(this.id));
-						const index = users.findIndex(user => Number(user['id']) === Number(this.id));
-						activeUser['imgs'].push(image);
-						users.splice(index, 1);
-						users.push(activeUser);
-						localStorage.removeItem('userDetails');
-						localStorage.setItem('userDetails', JSON.stringify(users));
-						const token = this.cookieService.get('token'); 
-						if (token && Number(token) === Number(this.id)) {
-							this.commonService.setEvent('imgSrc', img);
-						}
-					}
-				});
+				this.handleDoneAndError(info);
 				break;
 			case 'error':
-				this.showNotification('error', 'Error', 'Network error');
+				this.handleDoneAndError(info);
 				this.loading = false;
 				break;
 		}

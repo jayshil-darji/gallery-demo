@@ -6,7 +6,7 @@
 
 	<nz-descriptions-item nzTitle="Photos">
 		<div class="clearfix">
-			<nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzListType="picture-card"
+			<nz-upload nzAction="" nzListType="picture-card"
 				[(nzFileList)]="fileList" [nzShowButton]="fileList.length < 3" [nzShowUploadList]="showUploadList"
 				[nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event)" [nzPreview]="handlePreview"
 				[nzRemove]="nzRemove">
