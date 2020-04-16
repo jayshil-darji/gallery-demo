@@ -5,7 +5,7 @@
 	<nz-descriptions-item nzTitle="Password"> {{ userDetails['password'] }} </nz-descriptions-item>
 
 	<nz-descriptions-item nzTitle="Photos">
-		<div class="clearfix">
+		<div class="clearfix" *ngIf="userDetails.hasOwnProperty('name')">
 			<nz-upload nzAction="" nzListType="picture-card"
 				[(nzFileList)]="fileList" [nzShowButton]="fileList.length < 3" [nzShowUploadList]="showUploadList"
 				[nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event)" [nzPreview]="handlePreview"

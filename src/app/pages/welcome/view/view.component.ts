@@ -44,8 +44,12 @@ export class ViewComponent implements OnInit {
 		if (data) {
 			const users = JSON.parse(data);
 			const user = users.filter(usr => Number(usr['id']) === Number(this.id));
-			this.userDetails = user[0];
-			this.fileList = [...user[0]['imgs']];
+			if (user && user.length) {
+				this.userDetails = user[0];
+				this.fileList = [...user[0]['imgs']];
+			} else {
+				this.showNotification('error', 'User not found', 'ID not found please try again with another ID');
+			}
 		}
 	}
 
